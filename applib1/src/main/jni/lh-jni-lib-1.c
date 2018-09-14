@@ -419,7 +419,7 @@ Java_com_example_applib1_JniTest_ndkfilecrypt_1decrypt(JNIEnv *env, jobject inst
 
 JNIEXPORT void JNICALL
 Java_com_example_applib1_JniTest_logFFmpegConfig(JNIEnv *env, jobject instance, jstring url_) {
-    LOGE("Java_com_example_applib1_JniFFmpegConfig_logFFmpegConfig");
+    LOGE("Java_com_example_applib1_JniFFmpegConfig_logFFmpegCon  fig");
     const char *string = (*env)->GetStringUTFChars(env, url_,NULL);
 
 
