@@ -22,6 +22,13 @@ import java.util.UUID;
 public class JniTest {
 
     static{
+        System.loadLibrary("avutil");
+        System.loadLibrary("swresample");
+        System.loadLibrary("avcodec");
+        System.loadLibrary("avformat");
+        System.loadLibrary("swscale");
+        System.loadLibrary("postproc");
+        System.loadLibrary("avfilter");
         System.loadLibrary("lh-jni-lib-1");
     }
 

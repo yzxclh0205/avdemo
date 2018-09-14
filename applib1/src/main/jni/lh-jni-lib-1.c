@@ -2,6 +2,8 @@
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <lh-jni.h>
+#include <libavformat/avformat.h>
 //#include "lh-jni.h"
 //#include "libavformat/avformat.h"
 
@@ -417,9 +419,27 @@ Java_com_example_applib1_JniTest_ndkfilecrypt_1decrypt(JNIEnv *env, jobject inst
 
 JNIEXPORT void JNICALL
 Java_com_example_applib1_JniTest_logFFmpegConfig(JNIEnv *env, jobject instance, jstring url_) {
-    const char *url = (*env)->GetStringUTFChars(env, url_, 0);
+    LOGE("Java_com_example_applib1_JniFFmpegConfig_logFFmpegConfig");
+    const char *string = (*env)->GetStringUTFChars(env, url_,NULL);
 
-    // TODO
 
-    (*env)->ReleaseStringUTFChars(env, url_, url);
+    LOGE("url：%s",string);
+    av_register_all();
+    AVCodec *c_temp = av_codec_next(NULL);
+    while(c_temp!=NULL){
+        switch (c_temp->type){
+            case AVMEDIA_TYPE_VIDEO:
+                LOGE("[VIDEO]：%s",c_temp->name);
+                break;
+            case AVMEDIA_TYPE_AUDIO:
+                LOGE("[AUDIO]：%s",c_temp->name);
+                break;
+            default:
+                LOGE("[Other]：%s",c_temp->name);
+                break;
+        }
+        c_temp = c_temp->next;
+
+    }
+    (*env)->ReleaseStringChars(env,url_,string);
 }

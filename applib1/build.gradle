@@ -25,6 +25,12 @@ android {
 //                abiFilters "armeabi-v7a"
 //            }
         }
+
+        sourceSets {
+            main {
+                jniLibs.srcDirs = ['src/main/jni/ffmpeg']
+            }
+        }
     }
 
     buildTypes {
