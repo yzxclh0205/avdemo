@@ -429,7 +429,7 @@ Java_com_example_applib1_JniTest_logFFmpegConfig(JNIEnv *env, jobject instance, 
     while(c_temp!=NULL){
         switch (c_temp->type){
             case AVMEDIA_TYPE_VIDEO:
-                LOGE("[VIDEO]：%s",c_temp->name);
+                LOGE("[VIDEO ]：%s",c_temp->name);
                 break;
             case AVMEDIA_TYPE_AUDIO:
                 LOGE("[AUDIO]：%s",c_temp->name);
