@@ -262,7 +262,7 @@ Java_com_example_applib1_JniTest_sound(JNIEnv *env, jobject instance, jstring in
             //解码一帧
             int ret = avcodec_decode_audio4(pCodecCtx, avFrame, &got_frame, avPacket);
             if(ret<0){
-                LOGE("%d 解码完毕",count);
+                LOGE("%d 解码 完毕",count);
             }
             //解码成功后处理数据
             if(got_frame>0){
