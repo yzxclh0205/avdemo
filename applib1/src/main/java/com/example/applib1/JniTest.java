@@ -1,8 +1,12 @@
 package com.example.applib1;
 
 import android.content.Context;
+import android.media.AudioFormat;
+import android.media.AudioManager;
+import android.media.AudioTrack;
 import android.os.Environment;
 import android.util.Log;
+import android.view.Surface;
 
 import java.io.BufferedWriter;
 import java.io.ByteArrayOutputStream;
@@ -76,6 +80,8 @@ public class JniTest {
     public native void ndkfilecrypt_decrypt(String in,String out);
 
     public native void logFFmpegConfig(String url);
+
+    public native void render(String input,Surface surface);
 
 
 
@@ -203,4 +209,24 @@ public class JniTest {
     public static String getUUID(){
         return UUID.randomUUID().toString();
     }
+
+    public AudioTrack getAudioTrack(int sampleRateInHz,int nb_channels){
+
+        int channleConfig;
+        if(nb_channels == 1){
+            channleConfig = AudioFormat.CHANNEL_IN_MONO;
+        }else{
+            channleConfig = AudioFormat.CHANNEL_IN_STEREO;
+        }
+        int audioFormat = AudioFormat.ENCODING_PCM_16BIT;
+
+        int buffSizeInBytes = AudioTrack.getMinBufferSize(sampleRateInHz,channleConfig,audioFormat);
+
+        AudioTrack audioTrack = new AudioTrack(AudioManager.STREAM_MUSIC,sampleRateInHz,channleConfig,audioFormat,buffSizeInBytes,AudioTrack.MODE_STREAM);
+//        audioTrack.play();
+//        audioTrack.write(@NonNull byte[] audioData, int offsetInBytes, int sizeInBytes
+        return audioTrack;
+    }
+
+    public native void sound(String input,String output);
 }

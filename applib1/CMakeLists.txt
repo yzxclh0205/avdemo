@@ -16,6 +16,7 @@ add_library( # Sets the name of the library.
              SHARED
 
              # Provides a relative path to your source file(s).
+             src/main/jni/lh_ffmpeg_player_use_yuv.c
              src/main/jni/lh-jni-lib-1.c)
 
 find_library( # Sets the name of the path variable.
@@ -82,6 +83,14 @@ set_target_properties( swscale
                         PROPERTIES IMPORTED_LOCATION
                         ${CMAKE_SOURCE_DIR}/src/main/jni/ffmpeg/armeabi-v7a/libpostproc.so)
 
+   #添加libyuv.so
+   add_library( yuv
+                SHARED
+                IMPORTED)
+   set_target_properties( yuv
+                          PROPERTIES IMPORTED_LOCATION
+                          ${CMAKE_SOURCE_DIR}/src/main/jni/ffmpeg/armeabi-v7a/libyuv.so)
+
   target_link_libraries( # Specifies the target library.
 
                          lh-jni-lib-1
@@ -92,6 +101,10 @@ set_target_properties( swscale
                          swresample
                          swscale
                          postproc
+                         yuv
+                         jnigraphics
+                         android
+                         OpenSLES
 
                          # Links the target library to the log library
                          # included in the NDK.

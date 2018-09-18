@@ -4,6 +4,9 @@
 #include <stdlib.h>
 #include <lh-jni.h>
 #include <libavformat/avformat.h>
+#include <android/native_window.h>
+#include <unistd.h>
+#include <android/native_window_jni.h>
 //#include "lh-jni.h"
 //#include "libavformat/avformat.h"
 
