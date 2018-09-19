@@ -245,9 +245,6 @@ Java_com_example_applib1_JniTest_sound(JNIEnv *env, jobject instance, jstring in
 
     jmethodID audio_track_write = (*env)->GetMethodID(env, audio_class, "write", "([BII)I");
 
-
-
-
     AVPacket *avPacket = av_malloc(sizeof(AVPacket));
     av_init_packet(avPacket);
     AVFrame *avFrame = av_frame_alloc();

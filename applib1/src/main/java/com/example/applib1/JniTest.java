@@ -82,6 +82,7 @@ public class JniTest {
     public native void logFFmpegConfig(String url);
 
     public native void render(String input,Surface surface);
+    public native void play(String input,String output,Surface surface);
 
 
 

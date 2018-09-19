@@ -16,6 +16,8 @@ add_library( # Sets the name of the library.
              SHARED
 
              # Provides a relative path to your source file(s).
+             src/main/jni/queue.c
+             src/main/jni/lh_player.c
              src/main/jni/lh_ffmpeg_player_use_yuv.c
              src/main/jni/lh-jni-lib-1.c)
 

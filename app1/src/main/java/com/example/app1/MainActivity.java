@@ -54,7 +54,8 @@ public class MainActivity extends AppCompatActivity {
                 String input = new File(Environment.getExternalStorageDirectory(),video).getAbsolutePath();
 //                jniTest.render(input,surface);
                 String output = new File(Environment.getExternalStorageDirectory(),"lhtest.pcm").getAbsolutePath();
-                jniTest.sound(input, output);
+//                jniTest.sound(input, output);
+                jniTest.play(input, output,surface);
             }
         });
 //        ViewGroup viewGroup = findViewById(R.id.rootView);
