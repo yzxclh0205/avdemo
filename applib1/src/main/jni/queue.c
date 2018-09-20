@@ -35,12 +35,14 @@ int queue_get_next(Queue *queue,int current){
  * 2.压栈: 这里的压栈 最终的目的是赋值参数，移动下一个处理的索引（写）。返回值：队列元素指针，参数：要操作的队列的指针，互斥锁，条件变量
  */
 void* queue_push(Queue *queue,pthread_mutex_t *mutex,pthread_cond_t *cond){
-    int current = queue->next_to_write;
+    int current;
     int next_to_write;
     for(;;){//while循环 控制惊群效应，只允许一个线程获得锁进行操作
+        current = queue->next_to_write;//------------------这里使得每一帧数据都一次往后写
         next_to_write = queue_get_next(queue, current);
         //这里处理的方式是，下一个要读的位置等于下一个要写的位置是，等我写完，再读
         //不等于就继续；反过来就是。下一个要读的位置不等于要写的位置，就可以继续写
+        LOGI("queue_push queue：%#x当前要写的：%d 下一个要读的%d",queue,current,queue->next_to_read);
         if(queue->next_to_read !=next_to_write){
             break;
         }
@@ -57,12 +59,14 @@ void* queue_push(Queue *queue,pthread_mutex_t *mutex,pthread_cond_t *cond){
  * 3.出队列: 这里的出栈 最终的目的是拿到队列的元素，移动下一个处理的索引（读）。返回值：队列元素指针，参数：要操作的队列的指针，互斥锁，条件变量
  */
 void* queue_pop(Queue *queue,pthread_mutex_t *mutex,pthread_cond_t *cond){
-    int current = queue->next_to_read;
-    int next_to_read;
+    int current;
     for(;;){
+        current = queue->next_to_read;//----------------------------这句放在这里赋值 会出现curren为空的情况？咋产生的？ 原来是 生产时 current 在while多了 current的声明，局部两个变量
+        LOGI("queue_pop queue：%#x当前要读的：%d 下一个要写的%d",queue,current,queue->next_to_write);
 //        next_to_read = queue_get_next(queue,current);
         //如果当前的读是下一个写，那要等写完再说。没有可读的了-------------------------------这里区别于写的逻辑，因为当前已没有可读的了
-        if(current!=queue->next_to_write){
+//        if(current!=queue->next_to_write){
+        if(queue->next_to_read != queue->next_to_write){
             break;
         }
         pthread_cond_wait(cond,mutex);

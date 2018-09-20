@@ -50,10 +50,12 @@ public class MainActivity extends AppCompatActivity {
             public void run() {
                 JniTest jniTest = new JniTest();
                 Surface surface = surfaceView.getHolder().getSurface();
-                String video = "Forrest_Gump_IMAX.mp4";
+//                String video = "Forrest_Gump_IMAX.mp4";
+//                String video = "中国合伙人.flv";
+                String video = "屌丝男士.mov";
                 String input = new File(Environment.getExternalStorageDirectory(),video).getAbsolutePath();
 //                jniTest.render(input,surface);
-                String output = new File(Environment.getExternalStorageDirectory(),"lhtest.pcm").getAbsolutePath();
+                String output = new File(Environment.getExternalStorageDirectory(),"lhtest1.pcm").getAbsolutePath();
 //                jniTest.sound(input, output);
                 jniTest.play(input, output,surface);
             }
