@@ -2,8 +2,12 @@
 cmake_minimum_required(VERSION 3.4.1)
 
 # 设置要添加的头文件路径
-include_directories(src/main/jni/ffmpeg/include)
-include_directories(src/main/jni/include)
+include_directories(   src/main/jni/ffmpeg/include
+                       src/main/jni/include
+                       src/main/jni/rtmpdump/include
+                       src/main/jni/faac/include
+                       src/main/jni/x264/include)
+#include_directories()
 
 # 设置生成的so动态库最后输出的路径
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/jniLibs/${ANDROID_ABI})
@@ -16,6 +20,8 @@ add_library( # Sets the name of the library.
              SHARED
 
              # Provides a relative path to your source file(s).
+             src/main/jni/lh_push_queue.c
+             src/main/jni/lh_push.c
              src/main/jni/queue.c
              src/main/jni/lh_player.c
              src/main/jni/lh_ffmpeg_player_use_yuv.c
@@ -93,9 +99,30 @@ set_target_properties( swscale
                           PROPERTIES IMPORTED_LOCATION
                           ${CMAKE_SOURCE_DIR}/src/main/jni/ffmpeg/armeabi-v7a/libyuv.so)
 
+  #添加x264库
+  add_library(x264
+                STATIC
+                IMPORTED)
+  set_target_properties(x264  PROPERTIES IMPORTED_LOCATION  ${CMAKE_SOURCE_DIR}/src/main/jni/x264/libx264.a)
+
+  #添加faac库
+  add_library(faac
+                STATIC
+                IMPORTED)
+  set_target_properties(faac  PROPERTIES IMPORTED_LOCATION  ${CMAKE_SOURCE_DIR}/src/main/jni/faac/libfaac.a)
+
+    #添加rtmpdump库
+    add_library(rtmpdump
+                  STATIC
+                  IMPORTED)
+    set_target_properties(rtmpdump  PROPERTIES IMPORTED_LOCATION  ${CMAKE_SOURCE_DIR}/src/main/jni/rtmpdump/librtmp.a)
+
   target_link_libraries( # Specifies the target library.
 
                          lh-jni-lib-1
+                         x264
+                         faac
+                         rtmpdump
                          avcodec
                          avfilter
                          avformat
