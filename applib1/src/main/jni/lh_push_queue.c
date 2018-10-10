@@ -96,7 +96,7 @@ extern void* queue_get_value(int index){
 }
 //获取"双向链表中第一个元素"。成功返回节点指针，失败返回NULL
 extern void* queue_get_first(){
-    return get_node(0);
+    return get_node(0)->p;
 }
 //获取"双向链表中最后一个元素"。成功返回节点指针，失败返回NULL。
 extern void* queue_get_last(){

@@ -7,7 +7,6 @@ include_directories(   src/main/jni/ffmpeg/include
                        src/main/jni/rtmpdump/include
                        src/main/jni/faac/include
                        src/main/jni/x264/include)
-#include_directories()
 
 # 设置生成的so动态库最后输出的路径
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/jniLibs/${ANDROID_ABI})

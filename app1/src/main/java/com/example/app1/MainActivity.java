@@ -40,10 +40,9 @@ public class MainActivity extends AppCompatActivity implements LiveStateChangeLi
         TextView tx = findViewById(R.id.tx_content);
         surfaceView = findViewById(R.id.surfaceView);
 //        test1();
-//        test3();
 //
 //        test2();
-
+//        test3();
         test4();
 
     }
@@ -52,8 +51,8 @@ public class MainActivity extends AppCompatActivity implements LiveStateChangeLi
 
         //new SurfaceView(this);
 //        surfaceView = findViewById(R.id.surfaceView);
-//        SurfaceHolder holder = surfaceView.getHolder();
-//        holder.setFormat(PixelFormat.RGBA_8888);
+        SurfaceHolder holder = surfaceView.getHolder();
+        holder.setFormat(PixelFormat.RGBA_8888);
 
         surfaceView.post(new Runnable() {
             @Override
