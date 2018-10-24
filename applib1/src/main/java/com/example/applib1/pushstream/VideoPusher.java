@@ -46,6 +46,7 @@ class VideoPusher implements SurfaceHolder.Callback,Pusher, Camera.PreviewCallba
             bytes = new byte[videoParam.getWidth() * videoParam.getHeight() * 4];
             mCamera.addCallbackBuffer(bytes);
             mCamera.setPreviewCallbackWithBuffer(this);//-------------这一句开始会接收到回到
+            camera.setPreviewDisplay(surfaceHolder);
             //开启预览
             mCamera.startPreview();
 
@@ -102,7 +103,6 @@ class VideoPusher implements SurfaceHolder.Callback,Pusher, Camera.PreviewCallba
         if(isCollection){
             pushNative.fireVideoData(bytes);
         }
-
     }
 
     public void switchCamera() {

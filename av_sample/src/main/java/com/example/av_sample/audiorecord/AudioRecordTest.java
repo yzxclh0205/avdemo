@@ -3,8 +3,11 @@ package com.example.av_sample.audiorecord;
 import android.Manifest;
 import android.content.pm.PackageManager;
 import android.media.AudioFormat;
+import android.media.AudioManager;
 import android.media.AudioRecord;
+import android.media.AudioTrack;
 import android.media.MediaRecorder;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
@@ -20,6 +23,7 @@ import com.example.av_sample.R;
 import com.example.av_sample.util.PcmToWavUtil;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -42,9 +46,13 @@ public class AudioRecordTest extends AppCompatActivity {
     private boolean isRecording;
     private TextView tv1;
     private View tv2;
+    private int sampleRateInHz = 44100;//采样率
+    private int channel = 2;//声道个数，
     private int audioFormat = AudioFormat.ENCODING_PCM_16BIT;
+    private int chanelConfig = channel ==1 ? AudioFormat.CHANNEL_IN_MONO:AudioFormat.CHANNEL_IN_STEREO;
     private String pcmPath = Environment.getExternalStorageDirectory()+ File.separator+"lh_pcm.pcm";
     private String wavePath = Environment.getExternalStorageDirectory()+ File.separator+"lh_pcm.wav";
+    private View tv3;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +60,7 @@ public class AudioRecordTest extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         tv1 = findViewById(R.id.tx1);
         tv2 = findViewById(R.id.tx2);
+        tv3 = findViewById(R.id.tx3);
         tv1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -64,8 +73,57 @@ public class AudioRecordTest extends AppCompatActivity {
                 handleTran();
             }
         });
+        tv3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                play();
+            }
+        });
         init();
         checkPermissions();
+    }
+    private AudioTrack audioTrack;
+    private void play() {
+        new Thread(new Runnable() {
+
+
+            @Override
+            public void run() {
+                //声道模式
+//                int chanelConfig = channel ==1 ? AudioFormat.CHANNEL_IN_MONO:AudioFormat.CHANNEL_IN_STEREO;
+                //声道格式
+//                audioFormat = AudioFormat.ENCODING_PCM_16BIT;
+                audioTrack = new AudioTrack(AudioManager.STREAM_MUSIC,sampleRateInHz,chanelConfig,audioFormat,minBufferSize,AudioTrack.MODE_STREAM);
+                try {
+                    FileInputStream fis = new FileInputStream(pcmPath);
+                    audioTrack.play();
+                    while(fis.available()>0){
+                        int len = fis.read(bytes);
+                        if (len == AudioTrack.ERROR_INVALID_OPERATION ||
+                                len == AudioTrack.ERROR_BAD_VALUE) {
+                            continue;
+                        }
+                        if(len>0){
+                            audioTrack.write(bytes,0,len);
+                        }
+                    }
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }).start();
+    }
+    private void releaseAudioTrack() {
+        if (this.audioTrack != null) {
+            Log.d("AudioRecordTest", "Stopping");
+            audioTrack.stop();
+            Log.d("AudioRecordTest", "Releasing");
+            audioTrack.release();
+            Log.d("AudioRecordTest", "Nulling");
+        }
     }
 
     private void handleTran() {
@@ -86,14 +144,13 @@ public class AudioRecordTest extends AppCompatActivity {
         }
     }
 
-    private int sampleRateInHz = 44100;//采样率
-    private int channel = 1;//声道个数，
+
     //声道格式 、 声道模式
     private void init() {
         //声道模式
-        int chanelConfig = channel ==1 ? AudioFormat.CHANNEL_IN_MONO:AudioFormat.CHANNEL_IN_STEREO;
+//        int chanelConfig = channel ==1 ? AudioFormat.CHANNEL_IN_MONO:AudioFormat.CHANNEL_IN_STEREO;
         //声道格式
-        audioFormat = AudioFormat.ENCODING_PCM_16BIT;
+//        audioFormat = AudioFormat.ENCODING_PCM_16BIT;
 
 //        1.构造一个AudioRecord对象，其中需要的最小录音缓存buffer大小可以通过getMinBufferSize方法得到。如果buffer容量过小，将导致对象构造的失败。
         minBufferSize = AudioRecord.getMinBufferSize(sampleRateInHz, chanelConfig, audioFormat);
