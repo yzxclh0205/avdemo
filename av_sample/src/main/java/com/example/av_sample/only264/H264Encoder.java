@@ -28,7 +28,7 @@ public class H264Encoder {
     private int height = 240;
     private int frameRate = 25;
 
-    private ArrayBlockingQueue<byte[]> yuv420Queue = new ArrayBlockingQueue<byte[]>(10);
+    private ArrayBlockingQueue<byte[]> yuv420Queue = new ArrayBlockingQueue<byte[]>(100);
     private MediaCodec mediaCodec;
     private BufferedOutputStream bos;
     private byte[] configbyte;
