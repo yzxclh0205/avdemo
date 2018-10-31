@@ -1,4 +1,4 @@
-package com.example.av_sample.opengles;
+package com.example.av_sample.opengles.sample;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;

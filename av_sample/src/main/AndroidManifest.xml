@@ -50,7 +50,7 @@
             <!--</intent-filter>-->
         </activity>
 
-        <activity android:name=".opengles.OpenGLES20Activity">
+        <activity android:name=".opengles.sample.OpenGLES20Activity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
