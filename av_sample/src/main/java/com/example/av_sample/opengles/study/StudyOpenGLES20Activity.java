@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
 import com.example.av_sample.opengles.sample.MyGLSurfaceView;
+import com.example.av_sample.opengles.study.glsv.OvalGLSurfaceView;
 import com.example.av_sample.opengles.study.glsv.SquareSurfaceView;
 import com.example.av_sample.opengles.study.glsv.TriangleGLSurfaceView;
 
@@ -21,6 +22,8 @@ public class StudyOpenGLES20Activity extends AppCompatActivity {
         //三角形
 //        setContentView(new TriangleGLSurfaceView(this));
         //正方形
-        setContentView(new SquareSurfaceView(this));
+//        setContentView(new SquareSurfaceView(this));
+        //圆形
+        setContentView(new OvalGLSurfaceView(this));
     }
 }

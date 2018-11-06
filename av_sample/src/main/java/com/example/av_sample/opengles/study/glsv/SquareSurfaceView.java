@@ -3,7 +3,7 @@ package com.example.av_sample.opengles.study.glsv;
 import android.content.Context;
 import android.util.AttributeSet;
 
-import com.example.av_sample.opengles.study.base.BaseGLSuifaceView;
+import com.example.av_sample.opengles.study.base.BaseGLSurfaceView;
 import com.example.av_sample.opengles.study.shape.square.Cube;
 import com.example.av_sample.opengles.study.shape.square.Square;
 import com.example.av_sample.opengles.study.shape.square.VaryMatrixCube;
@@ -15,7 +15,7 @@ import javax.microedition.khronos.opengles.GL10;
  * Created by lh on 2018/10/31.
  */
 
-public class SquareSurfaceView extends BaseGLSuifaceView {
+public class SquareSurfaceView extends BaseGLSurfaceView {
     public SquareSurfaceView(Context context) {
         super(context);
 

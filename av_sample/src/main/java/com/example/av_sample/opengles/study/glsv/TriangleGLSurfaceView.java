@@ -4,7 +4,7 @@ import android.content.Context;
 import android.opengl.GLES20;
 import android.util.AttributeSet;
 
-import com.example.av_sample.opengles.study.base.BaseGLSuifaceView;
+import com.example.av_sample.opengles.study.base.BaseGLSurfaceView;
 import com.example.av_sample.opengles.study.shape.triangle.CameraTriangle;
 import com.example.av_sample.opengles.study.shape.triangle.ColorfulTriangle;
 import com.example.av_sample.opengles.study.shape.triangle.TriangleStudy;
@@ -15,7 +15,7 @@ import javax.microedition.khronos.opengles.GL10;
 /**
  *
  */
-public class TriangleGLSurfaceView extends BaseGLSuifaceView {
+public class TriangleGLSurfaceView extends BaseGLSurfaceView {
 
     public TriangleGLSurfaceView(Context context) {
         super(context);

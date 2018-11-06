@@ -1,2 +1,2 @@
-include ':av_sample'
+include ':av_sample', ':bushou1'
 //':app1', ':applib1',
