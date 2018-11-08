@@ -4,12 +4,42 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context="com.example.bushou1.MainActivity">
 
     <TextView
-        android:id="@+id/tx"
+        android:id="@+id/tx_contenet"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="20dp"
+        android:text="服务器返回数据显示" />
+
+
+
+    <TextView
+        android:id="@+id/tx"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:textSize="20dp"
         android:text="点击开始" />
+    <EditText
+        android:id="@+id/et_couponid"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:singleLine="true"
+        android:hint="填入优惠券id(可以猜测id每天递增)"
+        android:text="1181"
+        />
+    <EditText
+        android:id="@+id/et_cookie"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="填入cookie"
+        android:singleLine="true"
+        android:text=""
+        />
+
 
 </LinearLayout>
