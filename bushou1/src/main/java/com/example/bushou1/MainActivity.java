@@ -18,6 +18,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     HttpUtil httpUtil;
     private EditText et_couponid;
     private EditText et_cookie;
+    private EditText et_url;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +32,24 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void handleWatcher() {
+        et_url = findViewById(R.id.et_url);
+        et_url.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                setUrl();
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
         et_couponid = findViewById(R.id.et_couponid);
         et_couponid.addTextChangedListener(new TextWatcher() {
             @Override
@@ -66,14 +85,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
         initParams();
-;
+    }
+
+    private void setUrl() {
+        String trim = et_url.getText().toString().trim();
+        SPUtils.put(this,"url",trim);
+        httpUtil.setUrl(trim);
     }
 
     private void initParams() {
         String cookie = (String) SPUtils.get(this, "cookie", "");
         String couponid = (String) SPUtils.get(this, "couponid", "");
+        String url = (String) SPUtils.get(this, "url", "");
+        et_url.setText(url);
         et_cookie.setText(cookie);
         et_couponid.setText(couponid);
+        httpUtil.setUrl(url);
         httpUtil.setCookie(cookie);
         httpUtil.setCouponId(couponid);
     }
@@ -113,6 +140,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     }else if(msg.what == httpUtil.NO_COUPON_ID){
                         tx_contenet.setText("优惠券id再检查检查");
                         Toast.makeText(MainActivity.this,"优惠券id再检查检查",Toast.LENGTH_SHORT).show();
+                        stop();
+                    }else if(msg.what == httpUtil.NO_URL){
+                        tx_contenet.setText("URL再检查检查");
+                        Toast.makeText(MainActivity.this,"URL再检查检查",Toast.LENGTH_SHORT).show();
                         stop();
                     }
                     else {

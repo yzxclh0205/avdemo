@@ -40,6 +40,7 @@ public class HttpUtil {
     public final  String POST = "POST";
     public final  int NO_COUPON_ID = 1;
     public final  int NO_COOKIE = 2;
+    public final  int NO_URL = 3;
 
     /**
      * 模拟Http Get请求
@@ -228,14 +229,22 @@ public class HttpUtil {
         this.couponId = couponId;
     }
 
-    String url = null;
+    private String url = null;
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+//    https://m.51bushou.com/ygg-hqbs/coupon/doCmsCoupon?cId=5618&APPOS=1&isApp=1&os=2&accountId=1286141704&version=3.80&sign=A1EB471688FF6B8E&channel=3
     Map<String,String> map = null;
     private MainActivity context;
      Handler handler;
-    public void main(MainActivity context, Handler handler1){
+    public void main(MainActivity context, final Handler handler1){
         this.context = context;
         this.handler = handler1;
-        url= "https://m.51bushou.com/ygg-hqbs/coupon/doCmsCoupon?cId=5618&APPOS=1&isApp=1&os=2&accountId=1286141704&version=3.80&sign=A1EB471688FF6B8E&channel=3";
         map = new HashMap<>();
         map.put("cmsCouponId",getCouponId());
         try {
@@ -261,6 +270,10 @@ public class HttpUtil {
                                     (getCookie().length()<10)
                                     ){
                                 handler.sendEmptyMessage(NO_COOKIE);
+                                break;
+                            }
+                            if(TextUtils.isEmpty(url) || getUrl().length()<10){
+                                handler.sendEmptyMessage(NO_URL);
                                 break;
                             }
                             i++;
