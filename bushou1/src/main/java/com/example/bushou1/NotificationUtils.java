@@ -28,7 +28,7 @@ public class NotificationUtils extends ContextWrapper {
         NotificationChannel channel = new NotificationChannel(id, name, NotificationManager.IMPORTANCE_HIGH);
         getManager().createNotificationChannel(channel);
     }
-    private NotificationManager getManager(){
+    public NotificationManager getManager(){
         if (manager == null){
             manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         }

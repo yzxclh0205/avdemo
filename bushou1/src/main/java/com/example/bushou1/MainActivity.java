@@ -3,6 +3,7 @@ package com.example.bushou1;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.os.Build;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
@@ -48,7 +49,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         tx = findViewById(R.id.tx);
         tx_contenet = findViewById(R.id.tx_contenet);
         tx.setOnClickListener(this);
-        httpUtil = new HttpUtil();
+        httpUtil = new HttpUtil(this);
         tx_contenet.setOnClickListener(this);
 
 //        bindServiceT();
@@ -56,8 +57,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void startServiceT() {
-        Intent intent = new Intent(this, LongRunningService.class);
-        startService(intent);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            this.startForegroundService(new Intent(this, LongRunningService.class));
+        } else {
+            this.startService(new Intent(this, LongRunningService.class));
+        }
     }
 
     private void bindServiceT() {
@@ -147,7 +151,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void setUrl() {
         String trim = et_url.getText().toString().trim();
-        SPUtils.put(this,"url",trim);
         httpUtil.setUrl(trim);
     }
 
@@ -165,25 +168,23 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void setCookie(){
         String trim = et_cookie.getText().toString().trim();
-        SPUtils.put(this,"cookie",trim);
         httpUtil.setCookie(trim);
     }
     private void setCouponId(){
         String trim = et_couponid.getText().toString().trim();
-        SPUtils.put(this,"couponid",trim);
         httpUtil.setCouponId(trim);
     }
 
-//    private boolean hasReq;
-//    @Override
-//    public void onWindowFocusChanged(boolean hasFocus) {
-//        super.onWindowFocusChanged(hasFocus);
-//        if(!hasReq){
-//            handleWatcher();
+    private boolean hasReq;
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        if(!hasReq){
+            handleWatcher();
 //            httpUtil.getFirstAvaiableCouponId();
-//            hasReq = true;
-//        }
-//    }
+            hasReq = true;
+        }
+    }
 
     private void init() {
         handler = new Handler(getMainLooper()) {

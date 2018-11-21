@@ -33,6 +33,14 @@ public class LongRunningService extends Service {
             @Override
             public void run() {
                 Log.d("LongRunningService", "executed at " + getCurrTime());
+                long l = System.currentTimeMillis();
+                if(l > getDelay2() && l <getDelay3()){
+                    Log.d("LongRunningService", "开始执行程序 " + getCurrTime());
+                    HttpUtil httpUtil = new HttpUtil(LongRunningService.this);
+                    httpUtil.setOwn(true);
+                    httpUtil.main(LongRunningService.this,null);
+                }
+
             }
         }).start();
 
@@ -47,7 +55,7 @@ public class LongRunningService extends Service {
         long time = getDelay1();
         AlarmManager manager = (AlarmManager) getSystemService(ALARM_SERVICE);
         long delay =  time - System.currentTimeMillis();//System.10 * 1000; // 每十秒
-        long triggerAtTime = SystemClock.elapsedRealtime() + delay;
+        long triggerAtTime = SystemClock.elapsedRealtime() + 9 * 1000;
         Intent i = new Intent(this, AlarmReceiver.class);
         PendingIntent pi = PendingIntent.getBroadcast(this, 0, i, 0);
         manager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, triggerAtTime, pi);
@@ -66,11 +74,36 @@ public class LongRunningService extends Service {
         return time;
     }
 
-    private long getDelay() {
+//    private long getDelay2() {
+//        Calendar c = Calendar.getInstance();
+//        c.set(Calendar.HOUR_OF_DAY, 17);
+//        c.set(Calendar.MINUTE, 57);
+//        c.set(Calendar.SECOND, 47);
+//        long time = c.getTime().getTime();
+//        return time;
+//    }
+//    private long getDelay3() {
+//        Calendar c = Calendar.getInstance();
+//        c.set(Calendar.HOUR_OF_DAY, 17);
+//        c.set(Calendar.MINUTE, 57);
+//        c.set(Calendar.SECOND, 58);
+//        long time = c.getTime().getTime();
+//        return time;
+//    }
+
+    private long getDelay2() {
         Calendar c = Calendar.getInstance();
         c.set(Calendar.HOUR_OF_DAY, 19);
         c.set(Calendar.MINUTE, 59);
-        c.set(Calendar.SECOND, 50);
+        c.set(Calendar.SECOND, 47);
+        long time = c.getTime().getTime();
+        return time;
+    }
+    private long getDelay3() {
+        Calendar c = Calendar.getInstance();
+        c.set(Calendar.HOUR_OF_DAY, 19);
+        c.set(Calendar.MINUTE, 59);
+        c.set(Calendar.SECOND, 57);
         long time = c.getTime().getTime();
         return time;
     }

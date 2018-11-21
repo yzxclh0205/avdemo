@@ -1,6 +1,7 @@
 package com.example.bushou1;
 
 import android.app.Activity;
+import android.app.Notification;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Message;
@@ -246,54 +247,68 @@ public class HttpUtil {
         isExit = exit;
     }
 
-    private String cookie;
+//    private String cookie;
 
+//    String cookie = (String) SPUtils.get(this, "cookie", "");
+//    String couponid = (String) SPUtils.get(this, "couponid", "");
+//    String url = (String) SPUtils.get(this, "url", "");
     public String getCookie() {
         if (isOwn()) {
             return "JSESSIONID=D98F5071641B662C5ADA8CD7B2A00DA0; aliyungf_tc=AQAAALGpuUacSAoA1VtXcbeJ60jBPzk6; QQBS382362133=b879623f47; QQBSLG409292508=1; SERVERID=5d458c4f769d4f755a7355111edd6a90|1542769634|1542766242";
         } else {
-            return cookie;
+            return (String) SPUtils.get(context, "cookie", "");
         }
 //        return "JSESSIONID=D73AC6EF5BE0C9737EC8008E13DF03AE; aliyungf_tc=AQAAALGpuUacSAoA1VtXcbeJ60jBPzk6; QQBS382362133=b879623f47; QQBSLG409292508=1; SERVERID=5d458c4f769d4f755a7355111edd6a90|1542767152|1542766242";
 //        return cookie;//"JSESSIONID=27DCDE32FB6E52EFEE836BDC393251E2; aliyungf_tc=AQAAAOYHlChUQAcAapx0cVqPeRO4YvqQ; QQBS382362133=fe663c4943; QQBSLG409292508=1; SERVERID=7479bab27a19c348720ed00921b092ff|1541642840|1541640896";
     }
 
     public void setCookie(String cookie) {
-        this.cookie = cookie;
+//        this.cookie = cookie;
+        SPUtils.put(context,"cookie",cookie);
     }
 
-    private String couponId;
+//    private String couponId;
 
     public String getCouponId() {
-        return couponId;
+        String couponid = (String) SPUtils.get(context, "couponid", "");
+        System.out.println("getCouponId "+couponid);
+        return couponid;
     }
 
     public void setCouponId(String couponId) {
-        this.couponId = couponId;
+//        this.couponId = couponId;
+        SPUtils.put(context,"couponid",couponId);
+        String couponid = (String) SPUtils.get(context, "couponid", "");
+        System.out.println("setCouponId "+couponid);
     }
 
-    private String url = null;
+//    private String url = null;
 
     public String getUrl() {
         if (isOwn()) {
             return "https://m.51bushou.com/ygg-hqbs/coupon/doCmsCoupon?cId=5795&APPOS=1&isApp=1&os=2&accountId=1286141704&version=3.73&sign=A1EB471688FF6B8E&channel=5";
         } else {
-            return url;
+            return (String) SPUtils.get(context, "url", "");
         }
         //        return "https://m.51bushou.com/cms/index.html?cId=5795&APPOS=1&isApp=1&os=2&accountId=1286141704&version=3.73&sign=A1EB471688FF6B8E&channel=5";
 //        return url;//"https://m.51bushou.com/ygg-hqbs/coupon/doCmsCoupon?cId=5618&APPOS=1&isApp=1&os=2&accountId=1286141704&version=3.80&sign=A1EB471688FF6B8E&channel=3";
     }
 
     public void setUrl(String url) {
-        this.url = url;
+//        this.url = url;
+        SPUtils.put(context,"url",url);
     }
 
     //    https://m.51bushou.com/ygg-hqbs/coupon/doCmsCoupon?cId=5618&APPOS=1&isApp=1&os=2&accountId=1286141704&version=3.80&sign=A1EB471688FF6B8E&channel=3
     Map<String, String> map = null;
-    private MainActivity context;
+    private Context context;
     Handler handler;
 
-    public void main(MainActivity context, final Handler handler1) {
+    public HttpUtil(Context context) {
+        this.context = context;
+    }
+
+    public void main(final Context context, final Handler handler1) {
         this.context = context;
         this.handler = handler1;
         map = new HashMap<>();
@@ -314,16 +329,19 @@ public class HttpUtil {
                             if (TextUtils.isEmpty(getCouponId()) ||
                                     (!getCouponId().startsWith("1") || getCouponId().length() < 3)
                                     ) {
+                                if(handler1!=null)
                                 handler.sendEmptyMessage(NO_COUPON_ID);
                                 break;
                             }
                             if (TextUtils.isEmpty(getCookie()) ||
                                     (getCookie().length() < 10)
                                     ) {
+                                if(handler1!=null)
                                 handler.sendEmptyMessage(NO_COOKIE);
                                 break;
                             }
                             if (TextUtils.isEmpty(getUrl()) || getUrl().length() < 10) {
+                                if(handler1!=null)
                                 handler.sendEmptyMessage(NO_URL);
                                 break;
                             }
@@ -338,12 +356,15 @@ public class HttpUtil {
                             System.out.println("asdf   " + post);
                             Message msg = Message.obtain();
                             msg.obj = "第 " + i + " 次请求结果如下：\n" + post;
+                            if(handler1!=null)
                             handler.sendMessage(msg);
                             if (!TextUtils.isEmpty(post) && (
                                     post.replaceAll(" ", "").contains(a) || post.replaceAll(" ", "").contains(a1)
                                             || post.replaceAll(" ", "").contains(a2) || post.replaceAll(" ", "").contains(a3)
                                             || post.replaceAll(" ", "").contains(a5) || post.replaceAll(" ", "").contains(a51)
                             )) {
+                                Notification notification = new NotificationUtils(context).sendNotification("结果", post);
+                                new NotificationUtils(context).getManager().notify(1,notification);
                                 showToast();
                                 break;
                             }
@@ -401,13 +422,15 @@ public class HttpUtil {
     }
 
     private void showToast() {
+        if(context!=null & context instanceof Activity){
 
-        context.runOnUiThread(new Runnable() {
-            public void run() {
-                context.setText();
-                Toast.makeText(context, "结束", Toast.LENGTH_LONG).show();
-            }
+            ((Activity)context).runOnUiThread(new Runnable() {
+                public void run() {
+//                    ((Activity)context).setText();
+                    Toast.makeText(context, "结束", Toast.LENGTH_LONG).show();
+                }
 
-        });
+            });
+        }
     }
 }
