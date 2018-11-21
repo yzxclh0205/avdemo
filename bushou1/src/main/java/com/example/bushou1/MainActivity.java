@@ -1,7 +1,12 @@
 package com.example.bushou1;
 
+import android.content.ComponentName;
+import android.content.Intent;
+import android.content.ServiceConnection;
 import android.os.Handler;
+import android.os.IBinder;
 import android.os.Message;
+import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
@@ -12,13 +17,28 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
-    Handler handler;
-    TextView tx;
-    TextView tx_contenet;
-    HttpUtil httpUtil;
+    private Handler handler;
+    private TextView tx;
+    private TextView tx_contenet;
+    private HttpUtil httpUtil;
     private EditText et_couponid;
     private EditText et_cookie;
     private EditText et_url;
+    private ServiceConnection connection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+//            TestService.MyBinder myBinder = (TestService.MyBinder)binder;
+//            service = myBinder.getService();
+//            Log.i("DemoLog", "ActivityA onServiceConnected");
+//            int num = service.getRandomNumber();
+//            Log.i("DemoLog", "ActivityA 中调用 TestService的getRandomNumber方法, 结果: " + num)！
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,7 +49,45 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         tx_contenet = findViewById(R.id.tx_contenet);
         tx.setOnClickListener(this);
         httpUtil = new HttpUtil();
+        tx_contenet.setOnClickListener(this);
+
+//        bindServiceT();
+        startServiceT();
     }
+
+    private void startServiceT() {
+        Intent intent = new Intent(this, LongRunningService.class);
+        startService(intent);
+    }
+
+    private void bindServiceT() {
+        Intent intent = new Intent(this,CustomTestService.class);
+        bindService(intent,connection,BIND_AUTO_CREATE);
+    }
+
+    /**
+     * 实现双击方法
+     * src 拷贝的源数组
+     * srcPos 从源数组的那个位置开始拷贝.
+     * dst 目标数组
+     * dstPos 从目标数组的那个位子开始写数据
+     * length 拷贝的元素的个数
+     */
+    final static int COUNTS = 5;//点击次数
+    final static long DURATION = 3 * 1000;//规定有效时间
+    long[] mHits = new long[COUNTS];
+    private void continuityClick(){
+        System.arraycopy(mHits, 1, mHits, 0, mHits.length - 1);
+        //实现左移，然后最后一个位置更新距离开机的时间，如果最后一个时间和最开始时间小于DURATION，即连续5次点击
+        mHits[mHits.length - 1] = SystemClock.uptimeMillis();
+        if (mHits[0] >= (SystemClock.uptimeMillis() - DURATION)) {
+            httpUtil.setOwn(true);
+            String tip = "own set";
+//            String tips = "您已在[" + DURATION + "]ms内连续点击【" + mHits.length + "】次了！！！";
+            Toast.makeText(MainActivity.this, tip, Toast.LENGTH_SHORT).show();
+        }
+    }
+
 
     private void handleWatcher() {
         et_url = findViewById(R.id.et_url);
@@ -116,16 +174,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         httpUtil.setCouponId(trim);
     }
 
-    private boolean hasReq;
-    @Override
-    public void onWindowFocusChanged(boolean hasFocus) {
-        super.onWindowFocusChanged(hasFocus);
-        if(!hasReq){
-            handleWatcher();
-            httpUtil.getFirstAvaiableCouponId();
-            hasReq = true;
-        }
-    }
+//    private boolean hasReq;
+//    @Override
+//    public void onWindowFocusChanged(boolean hasFocus) {
+//        super.onWindowFocusChanged(hasFocus);
+//        if(!hasReq){
+//            handleWatcher();
+//            httpUtil.getFirstAvaiableCouponId();
+//            hasReq = true;
+//        }
+//    }
 
     private void init() {
         handler = new Handler(getMainLooper()) {
@@ -163,7 +221,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onClick(View v) {
-        click();
+        if(v.getId() == R.id.tx_contenet){
+            continuityClick();
+        }else if(v.getId() == R.id.tx){
+            click();
+        }
     }
 
     private void click(){

@@ -16,6 +16,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <service android:name=".CustomTestService"/>
+        <service android:name=".LongRunningService"/>
+        <service android:name=".CustomTestService$CustomTestInnerService"/>
+        <receiver android:name=".AlarmReceiver"/>
     </application>
 
 </manifest>

@@ -22,7 +22,7 @@ android {
 
     defaultConfig {
         applicationId "com.example.bushou1"
-        minSdkVersion 15
+        minSdkVersion 16
         targetSdkVersion 26
         versionCode 1
         versionName "1.0"
@@ -33,12 +33,20 @@ android {
 
     buildTypes {
         debug {
-            minifyEnabled false
+            debuggable true
+            def isMinifyEnabled = false
+            minifyEnabled isMinifyEnabled
+            zipAlignEnabled isMinifyEnabled
+            shrinkResources isMinifyEnabled
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.release
         }
         release {
-            minifyEnabled false
+            debuggable true
+            def isMinifyEnabled = false
+            minifyEnabled isMinifyEnabled
+            zipAlignEnabled isMinifyEnabled
+            shrinkResources isMinifyEnabled
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.release
         }

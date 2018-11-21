@@ -8,13 +8,12 @@
     tools:context="com.example.bushou1.MainActivity">
 
     <TextView
+        android:padding="10dp"
         android:id="@+id/tx_contenet"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="20dp"
         android:text="服务器返回数据显示" />
-
-
 
     <TextView
         android:id="@+id/tx"
