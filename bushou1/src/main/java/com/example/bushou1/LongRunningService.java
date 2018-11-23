@@ -76,16 +76,16 @@ public class LongRunningService extends Service {
 
 //    private long getDelay2() {
 //        Calendar c = Calendar.getInstance();
-//        c.set(Calendar.HOUR_OF_DAY, 17);
-//        c.set(Calendar.MINUTE, 57);
+//        c.set(Calendar.HOUR_OF_DAY, 20);
+//        c.set(Calendar.MINUTE, 11);
 //        c.set(Calendar.SECOND, 47);
 //        long time = c.getTime().getTime();
 //        return time;
 //    }
 //    private long getDelay3() {
 //        Calendar c = Calendar.getInstance();
-//        c.set(Calendar.HOUR_OF_DAY, 17);
-//        c.set(Calendar.MINUTE, 57);
+//        c.set(Calendar.HOUR_OF_DAY, 20);
+//        c.set(Calendar.MINUTE, 11);
 //        c.set(Calendar.SECOND, 58);
 //        long time = c.getTime().getTime();
 //        return time;
@@ -93,15 +93,15 @@ public class LongRunningService extends Service {
 
     private long getDelay2() {
         Calendar c = Calendar.getInstance();
-        c.set(Calendar.HOUR_OF_DAY, 19);
+        c.set(Calendar.HOUR_OF_DAY, 15);
         c.set(Calendar.MINUTE, 59);
-        c.set(Calendar.SECOND, 47);
+        c.set(Calendar.SECOND, 49);
         long time = c.getTime().getTime();
         return time;
     }
     private long getDelay3() {
         Calendar c = Calendar.getInstance();
-        c.set(Calendar.HOUR_OF_DAY, 19);
+        c.set(Calendar.HOUR_OF_DAY, 15);
         c.set(Calendar.MINUTE, 59);
         c.set(Calendar.SECOND, 57);
         long time = c.getTime().getTime();
